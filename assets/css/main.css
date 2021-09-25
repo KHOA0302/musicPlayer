@@ -1,0 +1,150 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    text-align: center;
+}
+
+body {
+    background-image: url(/assets/img/background2.gif);
+    background-repeat: no-repeat;
+    background-size: 100% 130%;
+    background-position: center center;
+}
+
+header h4 {
+    color: #cc66ff;
+    font-size: 0.8rem;
+    line-height: 1.4rem;
+    font-weight: 900;
+}
+
+header h2 {
+    font-size: 1.4rem;
+    line-height: 2rem;
+}
+
+.player {
+    background-color: transparent;
+}
+
+.dashboard {
+    padding: 16px 16px 14px;
+    position: fixed;
+    background-color: #e98e9ec2;
+    top: 0;
+    width: 92%;
+    max-width: 480px;
+    border-radius: 20px;
+    margin-top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cd {
+    display: flex;
+    margin: auto;
+    width: 200px;
+    align-items: center;
+}
+
+.cd-thumb {
+    width: 100%;
+    padding-top: 100%;
+    margin-top: 10px;
+    border-radius: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.control {
+    display: flex;
+    width: 80%;
+    height: 60px;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    align-items: center;
+}
+
+.control .btn {
+    margin-right: auto;
+    color: rgb(85, 85, 85);
+}
+
+.control .btn:last-child {
+    margin-right: 0;
+}
+
+.btn-toggle-play {
+    padding: 14px 14px 8px 14px;
+    background-color: #cc66ff;
+    border-radius: 100%;
+}
+
+.fa-play, .fa-pause {
+    height: 22px;
+    color: #fff;
+}
+
+.fa-pause {
+    display: none;
+}
+
+.playing .fa-play {
+    display: none;
+}
+
+.playing .fa-pause {
+    display: block;
+}
+
+.progress {
+    width: 100%;
+}
+
+.playlist {
+    margin-top: 450px;
+    padding: 12px;
+}
+
+.song {
+    display: flex;
+    height: 100%;
+    width: 90%;
+    max-width: 480px;
+    padding: 10px 15px;
+    margin: auto;
+    margin-top: 16px;
+    align-items: center;
+    box-shadow: 3px 4px 10px rgb(184 180 180);
+    border-radius: 4px;
+    background-color: #fff;
+    border-radius: 14px;
+    background-color: #dab2b9bd;
+}
+
+.body {
+    margin-left: 30px;
+}
+
+.option {
+    margin-left: auto;
+}
+
+.thumb {
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 100%;
+}
