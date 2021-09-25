@@ -23,11 +23,15 @@ const player = $('.player');
 const progress = $('#progress');
 const next = $('.btn-next');
 const prev = $('.btn-prev');
+const randomBtn = $('.btn-random');
+const repeatBtn = $('.btn-repeat');
 
 const app = {
     currentIndex: 0,
     isPlaying: false,
     isTimeUpdate: true,
+    isRandom: false,
+    isRepeat: false,
     time: {
         spin: audio.duration,
     },
@@ -143,7 +147,16 @@ const app = {
 
         // auto play when changes song
         next.onclick = () => {
-            _this.nextSong();
+            if(_this.isRandom) {
+                _this.playRandomSong();
+                audio.onplay = ()=>{
+                    _this.isPlaying = true;
+                    player.classList.add("playing");
+                    cdThumbAnimate.play()
+                }
+            } else {
+                _this.nextSong();
+            }
             audio.play();
             audio.onplay = ()=>{
                 _this.isPlaying = true;
@@ -153,7 +166,17 @@ const app = {
         }
 
         prev.onclick = () => {
-            _this.prevSong();
+            if(_this.isRandom) {
+                audio.onplay = ()=>{
+                    _this.isPlaying = true;
+                    player.classList.add("playing");
+                    cdThumbAnimate.play()
+                }
+                _this.playRandomSong();
+                
+            } else {
+                _this.prevSong();
+            }
             audio.play();
             audio.onplay = ()=>{
                 _this.isPlaying = true;
@@ -161,6 +184,25 @@ const app = {
                 cdThumbAnimate.play()
             }
         }
+
+        //Random when you click next/prev
+        randomBtn.onclick = (e) => {
+            _this.isRandom = !_this.isRandom;
+            randomBtn.classList.toggle('active', _this.isRandom);
+        }
+
+        repeatBtn.onclick = (e) => {
+            _this.isRepeat = !_this.isRepeat;
+            repeatBtn.classList.toggle('active', _this.isRepeat);
+        }
+        
+        audio.onended = ()=>{
+            if (_this.isRepeat) {
+                audio.play();
+            } else {
+                next.click();
+            }
+         }
     },
     loadCurrentSong: function() {
         heading.textContent = this.currentSong.name;    
@@ -180,6 +222,15 @@ const app = {
             this.currentIndex = this.songs.length - 1;
         }
         this.loadCurrentSong();
+    },
+    playRandomSong: function() {
+      let newIndex;
+      do {
+          newIndex = Math.floor(Math.random() * this.songs.length);
+      } while(newIndex === this.currentIndex);
+
+      this.currentIndex = newIndex;
+      this.loadCurrentSong();
     },
     start: function() {
         this.defineProperties();
