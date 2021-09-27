@@ -62,9 +62,9 @@ const app = {
         },
     ],
     render: function() {
-        const html = this.songs.map((song) => {
+        const html = this.songs.map((song, index) => {
             return `
-                <div class="song">
+                <div class="song ${this.currentIndex === index ? 'active': ''}">
                     <div class="thumb" style="background-image: url('${song.img}')"></div>
                     <div class="body">
                         <h3 class="title">${song.name}</h3>
@@ -163,6 +163,7 @@ const app = {
                 player.classList.add("playing");
                 cdThumbAnimate.play()
             }
+            _this.render();
         }
 
         prev.onclick = () => {
@@ -183,6 +184,7 @@ const app = {
                 player.classList.add("playing");
                 cdThumbAnimate.play()
             }
+            _this.render();
         }
 
         //Random when you click next/prev

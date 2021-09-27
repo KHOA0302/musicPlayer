@@ -15,7 +15,7 @@ header {
 body {
     background-image: url(/assets/img/background2.gif), url(https://thuthuatnhanh.com/wp-content/uploads/2020/10/hinh-anh-gif-thanh-pho-buon.gif);
     background-repeat: no-repeat;
-    background-size: 100% 130%;
+    background-size: 100% 132%;
     background-position: center center;
 }
 
@@ -29,10 +29,6 @@ header h4 {
 header h2 {
     font-size: 1.4rem;
     line-height: 2rem;
-}
-
-.active {
-    color: #ff7070 !important;
 }
 
 .player {
@@ -88,6 +84,10 @@ header h2 {
     margin-right: 0;
 }
 
+.btn.active {
+    color: #ff7070 !important;
+}
+
 .btn-toggle-play {
     padding: 14px 14px 8px 14px;
     background-color: #ff7070;
@@ -134,6 +134,10 @@ header h2 {
     background-color: #fff;
     border-radius: 14px;
     background-color: #dab2b9bd;
+}
+
+.song.active {
+    background-color: #e98e9e;
 }
 
 .body {
