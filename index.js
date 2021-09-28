@@ -14,6 +14,8 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+const PLAYER_STORAGE_KEY = 'F8_PLAYER';
+
 const cd = $('.cd');
 const heading = $('header h2');
 const cdThumb = $('.cd-thumb');
@@ -25,6 +27,7 @@ const next = $('.btn-next');
 const prev = $('.btn-prev');
 const randomBtn = $('.btn-random');
 const repeatBtn = $('.btn-repeat');
+const playlist = $('.playlist');
 
 const app = {
     currentIndex: 0,
@@ -32,9 +35,7 @@ const app = {
     isTimeUpdate: true,
     isRandom: false,
     isRepeat: false,
-    time: {
-        spin: audio.duration,
-    },
+    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
         {
             name: 'Hold me while you wait',
@@ -60,11 +61,28 @@ const app = {
             path: './assets/music/Imagine Dragons  Not Today from ME BEFORE YOU.mp3',
             img: './assets/img/dragons.jpg'
         },
+        {
+            name: 'Talking to the moon',
+            singer: 'Bruno Mars',
+            path: './assets/music/Bruno Mars  Talking to the Moon.mp3',
+            img: './assets/img/brunomars.jpg'
+        },
+        {
+            name: 'All of me',
+            singer: 'Jonh Legend',
+            path: './assets/music/John Legend  All of Me.mp3',
+            img: './assets/img/legend.jpg'
+        },
+        
     ],
+    setConfig: function(key, value) {
+        this.config[key] = value;
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config));
+    },
     render: function() {
         const html = this.songs.map((song, index) => {
             return `
-                <div class="song ${this.currentIndex === index ? 'active': ''}">
+                <div class="song ${this.currentIndex === index ? 'active': ''}" data-index="${index}">
                     <div class="thumb" style="background-image: url('${song.img}')"></div>
                     <div class="body">
                         <h3 class="title">${song.name}</h3>
@@ -75,7 +93,7 @@ const app = {
                     </div>
                 </div>`;
         })
-        $('.playlist').innerHTML = html.join('');
+        playlist.innerHTML = html.join('');
     },
     defineProperties: function() {
         Object.defineProperty(this, 'currentSong', {
@@ -132,8 +150,20 @@ const app = {
             }
             }
         }
-       
-        // change current time of songs
+        // forward and rewind on mobile
+        document.querySelector('#progress').addEventListener('touchstart', touchStart);
+        function touchStart() {
+            _this.isTimeUpdate = false;
+            progress.onchange = (e) => {
+                const seekTime = audio.duration / 100 * e.target.value;
+                audio.currentTime = seekTime;
+            }
+        }
+        document.querySelector('#progress').addEventListener('touchend', touchEnd);
+        function touchEnd() {
+            _this.isTimeUpdate = true;
+        }
+        // forward and rewind on desktop
         progress.onmousedown = ()=>{
             _this.isTimeUpdate = false;
             progress.onchange = (e) => {
@@ -164,8 +194,8 @@ const app = {
                 cdThumbAnimate.play()
             }
             _this.render();
+            _this.scrollToActiveSong();
         }
-
         prev.onclick = () => {
             if(_this.isRandom) {
                 audio.onplay = ()=>{
@@ -185,16 +215,19 @@ const app = {
                 cdThumbAnimate.play()
             }
             _this.render();
+            _this.scrollToActiveSong();
         }
 
         //Random when you click next/prev
         randomBtn.onclick = (e) => {
             _this.isRandom = !_this.isRandom;
+            _this.setConfig('isRandom', _this.isRandom);
             randomBtn.classList.toggle('active', _this.isRandom);
         }
 
         repeatBtn.onclick = (e) => {
             _this.isRepeat = !_this.isRepeat;
+            _this.setConfig('isRepeat', _this.isRepeat);
             repeatBtn.classList.toggle('active', _this.isRepeat);
         }
         
@@ -205,11 +238,42 @@ const app = {
                 next.click();
             }
          }
+         // listen behavior click  at song 
+         playlist.onclick = (e)=>{
+            const songNode = e.target.closest('.song:not(.active)');
+            
+            if(songNode || e.target.closest('.option')) {
+                if(songNode) {
+                    _this.currentIndex = Number(songNode.dataset.index);
+                    _this.loadCurrentSong();
+                    _this.render();
+                    audio.play();
+                    audio.onplay = ()=>{
+                        _this.isPlaying = true;
+                        player.classList.add("playing");
+                        cdThumbAnimate.play()
+                    }
+            }
+        }
+        }
+    },
+    scrollToActiveSong: function() {
+        setTimeout(()=> {
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }, 200);
     },
     loadCurrentSong: function() {
         heading.textContent = this.currentSong.name;    
         cdThumb.style.backgroundImage =  `url('${this.currentSong.img}')`;
         audio.src = this.currentSong.path;
+    },
+    loadConFig: function() {
+        this.isRandom = this.config.isRandom;
+        this.isRepeat = this.config.isRepeat;
+        
     },
     nextSong: function() {
         this.currentIndex++;
@@ -235,15 +299,16 @@ const app = {
       this.loadCurrentSong();
     },
     start: function() {
+        this.loadConFig();
         this.defineProperties();
         this.handleEvents();
         this.loadCurrentSong();
+        randomBtn.classList.toggle('active', this.isRandom);
+        repeatBtn.classList.toggle('active', this.isRepeat);
         this.render();
     }
 } 
 
 app.start();
-
-
 
 
