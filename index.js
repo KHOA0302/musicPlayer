@@ -28,6 +28,10 @@ const prev = $('.btn-prev');
 const randomBtn = $('.btn-random');
 const repeatBtn = $('.btn-repeat');
 const playlist = $('.playlist');
+const volumeMute = $('.volume-mute');
+const volumeDown = $('.volume-down');
+const settingVolume = $('.volume');
+const html = $('html');
 
 const app = {
     currentIndex: 0,
@@ -35,6 +39,7 @@ const app = {
     isTimeUpdate: true,
     isRandom: false,
     isRepeat: false,
+    isSound: false,
     config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
         {
@@ -147,8 +152,10 @@ const app = {
                         const progressPercent = Math.floor((audio.currentTime / audio.duration)*100);
                         progress.value = progressPercent;
                     }
+                }
             }
-            }
+
+           
         }
         // forward and rewind on mobile
         document.querySelector('#progress').addEventListener('touchstart', touchStart);
@@ -171,6 +178,7 @@ const app = {
                 audio.currentTime = seekTime;
             }
         }
+
         progress.onmouseup = ()=> {
             _this.isTimeUpdate = true;
         }
@@ -255,6 +263,29 @@ const app = {
                     }
             }
         }
+        } 
+        var isSetting;
+        // Volume handle
+        audio.volume = 1;
+        settingVolume.value = 1;
+        volumeDown.onclick = ()=>{
+           _this.volumeMute();
+        }
+
+        volumeMute.onclick = ()=>{
+            _this.volumeUnmute();
+        }
+        
+        settingVolume.onchange = (e)=>{
+            const volumeValue = e.target.value;
+            _this.changeVolume(volumeValue);
+            if(volumeValue === '0') {
+                _this.volumeMute();
+            }
+            // else {
+            //     _this.volumeUnmute();
+            //     _this.changeVolume(volumeValue);
+            // }
         }
     },
     scrollToActiveSong: function() {
@@ -273,7 +304,6 @@ const app = {
     loadConFig: function() {
         this.isRandom = this.config.isRandom;
         this.isRepeat = this.config.isRepeat;
-        
     },
     nextSong: function() {
         this.currentIndex++;
@@ -298,6 +328,23 @@ const app = {
       this.currentIndex = newIndex;
       this.loadCurrentSong();
     },
+    volumeMute: function() {
+        this.isSound = !this.isSound;
+        audio.muted = this.isSound;
+        volumeDown.style.display = "none";
+        volumeMute.style.display = "block";
+        console.log('sound off: ' + this.isSound);
+    },
+    volumeUnmute: function() {
+        this.isSound = !this.isSound;
+        audio.muted = this.isSound;
+        volumeDown.style.display = "";
+        volumeMute.style.display = "";
+        console.log('sound on: ' + this.isSound);
+    },
+    changeVolume: function(volumeValue) {
+        audio.volume = volumeValue;
+    },
     start: function() {
         this.loadConFig();
         this.defineProperties();
@@ -310,5 +357,6 @@ const app = {
 } 
 
 app.start();
+
 
 

@@ -89,6 +89,37 @@ header h2 {
     color: #ff7070 !important;
 }
 
+.btn.btn-sound {
+    position: relative;
+    float: left;
+    font-size: 1.4rem;
+    color: rgb(85, 85, 85)
+}
+
+.btn .volume {
+    position: absolute;
+    display: block;
+    top: -350%;
+    left: -286%;
+    transform: rotate(-90deg);
+}
+
+.btn .volume.active {
+    display: block;
+}
+
+.btn.btn-sound .volume-mute {
+    display: none;
+}
+
+.btn.btn-sound .volume-down {
+    display: block;
+}
+.btn.btn-sound .volume-down,
+.btn.btn-sound  .volume-mute {
+    width: 20px;
+}
+
 .btn-toggle-play {
     padding: 14px 14px 8px 14px;
     background-color: #ff7070;
