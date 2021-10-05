@@ -264,28 +264,40 @@ const app = {
             }
         }
         } 
-        var isSetting;
+
         // Volume handle
         audio.volume = 1;
         settingVolume.value = 1;
+
         volumeDown.onclick = ()=>{
            _this.volumeMute();
+           settingVolume.value = 0;
+           audio.volume = 0;
         }
 
         volumeMute.onclick = ()=>{
             _this.volumeUnmute();
+            settingVolume.value = 0.1;
+            audio.volume = 0.1;
+        }
+
+        volumeDown.onmouseover = ()=>{
+            settingVolume.classList.add('active');
+            console.log('active')
+        }
+
+        html.onclick = (e)=>{
+            console.log(e.target, e.target === volume);
+            if(e.target !== volume) settingVolume.classList.remove('active');
         }
         
         settingVolume.onchange = (e)=>{
             const volumeValue = e.target.value;
             _this.changeVolume(volumeValue);
             if(volumeValue === '0') {
+                _this.changeVolume(volumeValue);
                 _this.volumeMute();
-            }
-            // else {
-            //     _this.volumeUnmute();
-            //     _this.changeVolume(volumeValue);
-            // }
+            } 
         }
     },
     scrollToActiveSong: function() {
@@ -333,14 +345,12 @@ const app = {
         audio.muted = this.isSound;
         volumeDown.style.display = "none";
         volumeMute.style.display = "block";
-        console.log('sound off: ' + this.isSound);
     },
     volumeUnmute: function() {
         this.isSound = !this.isSound;
         audio.muted = this.isSound;
         volumeDown.style.display = "";
         volumeMute.style.display = "";
-        console.log('sound on: ' + this.isSound);
     },
     changeVolume: function(volumeValue) {
         audio.volume = volumeValue;

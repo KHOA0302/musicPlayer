@@ -98,7 +98,7 @@ header h2 {
 
 .btn .volume {
     position: absolute;
-    display: block;
+    display: none;
     top: -350%;
     left: -286%;
     transform: rotate(-90deg);
