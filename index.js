@@ -283,11 +283,9 @@ const app = {
 
         volumeDown.onmouseover = ()=>{
             settingVolume.classList.add('active');
-            console.log('active')
         }
 
         html.onclick = (e)=>{
-            console.log(e.target, e.target === volume);
             if(e.target !== volume) settingVolume.classList.remove('active');
         }
         
