@@ -3,21 +3,18 @@
     margin: 0;
     box-sizing: inherit;
 }
+/* background-image: url(/assets/img/background2.gif), url(https://thuthuatnhanh.com/wp-content/uploads/2020/10/hinh-anh-gif-thanh-pho-buon.gif) */
 
 html {
-    font-family: 'Roboto', sans-serif;
+    background-image: url(/assets/img/background2.gif), url(https://thuthuatnhanh.com/wp-content/uploads/2020/10/hinh-anh-gif-thanh-pho-buon.gif);
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 header {
     text-align: center;
-}
-
-body {
-    position: relative;
-    background-image: url(/assets/img/background2.gif), url(https://thuthuatnhanh.com/wp-content/uploads/2020/10/hinh-anh-gif-thanh-pho-buon.gif);
-    background-repeat: no-repeat;
-    background-size: 100% 132%;
-    background-position: center center;
 }
 
 header h4 {

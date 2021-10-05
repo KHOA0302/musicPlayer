@@ -280,7 +280,8 @@ const app = {
             settingVolume.value = 0.1;
             audio.volume = 0.1;
         }
-
+        
+        document.querySelector('.volume-down').addEventListener('touchend', touchEnd);
         volumeDown.onmouseover = ()=>{
             settingVolume.classList.add('active');
         }
